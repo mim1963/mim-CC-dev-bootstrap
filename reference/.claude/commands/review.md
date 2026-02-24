@@ -121,6 +121,36 @@ Si des problèmes P1 sont détectés :
 ```
 
 Si tout est OK :
+
+Vérifier si git est activé :
+```bash
+grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && echo "GIT_ON" || echo "GIT_OFF"
+```
+
+Si `GIT_OFF` :
 ```
 ✅ Review complète — Code prêt pour merge
+```
+
+Si `GIT_ON`, proposer :
+```
+✅ Review complète — Code prêt pour merge
+
+Git — que faire de cette branche ?
+  [A] Créer un commit de jalon "chore: review passed" + afficher les instructions de merge
+  [B] Je gère le merge manuellement
+```
+
+Si l'utilisateur choisit [A] :
+```bash
+git commit --allow-empty -m "chore: review passed"
+```
+Puis afficher :
+```
+📦 Commit de jalon créé.
+
+Pour merger :
+  git checkout main
+  git merge [branche-courante]
+  # ou ouvrir une PR si un remote est configuré
 ```

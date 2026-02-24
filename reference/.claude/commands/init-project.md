@@ -98,3 +98,22 @@ Prochaines étapes :
 → /new-feature "première feature" — Pour démarrer le développement
 → /status — Pour voir l'état du projet
 ```
+
+### 7. Commit steering (si git activé)
+
+Vérifier si git est activé :
+
+```bash
+grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && echo "GIT_ON" || echo "GIT_OFF"
+```
+
+Si `GIT_ON` :
+
+```bash
+git add .claude/steering/
+git commit -m "chore(steering): initialisation fichiers projet"
+```
+
+Afficher : `📦 Git : commit steering créé — structure projet versionnée`
+
+Si `GIT_OFF` : ne rien faire.

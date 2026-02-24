@@ -31,6 +31,11 @@ Quand l'utilisateur invoque `/new-feature`, exécuter les étapes suivantes :
    - [ ] Phase 3 : Implémentation (N tâches)
    - [ ] Phase 4 : Review
    ```
+5. Créer la branche git (si activé) :
+
+```bash
+grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && git checkout -b feat/[feature-name] && echo "Branche feat/[feature-name] créée" || true
+```
 
 ### Étape 1 — Requirements (déléguer à spec-analyst)
 
@@ -53,6 +58,14 @@ Après completion :
   [C] Annuler
 ```
 Attendre la réponse explicite de l'utilisateur avant de continuer.
+
+Si [A] — commit requirements (si git activé) :
+
+```bash
+grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && \
+  git add "docs/specs/[feature-name]/requirements.md" && \
+  git commit -m "spec(feat): requirements [feature-name]" || true
+```
 
 ### Étape 2 — Design + Tasks (déléguer à spec-architect)
 
@@ -77,6 +90,14 @@ Validation tasks : [score]/100 | N tâches | ~Xh estimées
   [C] Annuler
 ```
 
+Si [A] — commit design + tasks (si git activé) :
+
+```bash
+grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && \
+  git add "docs/specs/[feature-name]/design.md" "docs/specs/[feature-name]/tasks.md" && \
+  git commit -m "spec(feat): design + tasks [feature-name]" || true
+```
+
 ### Étape 3 — Implémentation (boucle tâche par tâche)
 
 Pour chaque tâche dans tasks.md :
@@ -86,7 +107,14 @@ Pour chaque tâche dans tasks.md :
    - La section design pertinente (pas le design complet)
    - Instruction : "Implémenter UNIQUEMENT cette tâche, marquer [x], STOP"
 3. Lancer `spec-tester` pour les tests
-4. Si tests passent → tâche suivante
+4. Si tests passent :
+   - Commit automatique (si git activé) :
+     ```bash
+     grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && \
+       git add -A && \
+       git commit -m "feat([feature-name]): [task-description]" || true
+     ```
+   - Passer à la tâche suivante
 5. Si tests échouent → itérer avec spec-developer (max 2 tentatives)
 
 Afficher la progression : `[X/N] tâches complétées`
@@ -100,6 +128,12 @@ Afficher :
 → Lancer /review pour la revue complète 5-agents ?
   [A] Oui, lancer /review maintenant
   [B] Non, je le ferai plus tard
+```
+
+Si git activé, afficher aussi :
+```
+Git : N commits créés sur feat/[feature-name]
+→ Après /review, merger avec : git checkout main && git merge feat/[feature-name]
 ```
 
 ## Gestion du contexte

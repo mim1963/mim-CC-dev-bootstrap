@@ -77,6 +77,12 @@ Avez-vous vérifié que le bug n'est plus reproductible ?
   **Date résolution** : [date]
   **Fix** : voir fix-notes.md
   ```
+- Commit fix (si git activé) :
+  ```bash
+  grep -q "git_enabled.*true" docs/state/active-session.md 2>/dev/null && \
+    git add -A && \
+    git commit -m "fix: [bug-name]" || true
+  ```
 - Afficher :
   ```
   ✅ Bug [bug-name] RÉSOLU

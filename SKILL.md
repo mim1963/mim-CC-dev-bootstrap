@@ -22,7 +22,7 @@ MASTER_DEFAULT="$HOME/.claude/skills/dev-env-bootstrap/reference"
 [ -d "$MASTER_DEFAULT" ] && echo "FOUND" || echo "NOT_FOUND"
 ```
 
-- Si `FOUND` : pose les **3 questions** ci-dessous en un seul bloc.
+- Si `FOUND` : pose les **4 questions** ci-dessous en un seul bloc.
 - Si `NOT_FOUND` : la référence embarquée est absente — arrêter et informer l'utilisateur que le skill doit être réinstallé (la référence `reference/` manque dans `~/.claude/skills/dev-env-bootstrap/`).
 
 Attends les réponses avant de passer à la Phase 2.
@@ -32,6 +32,8 @@ Attends les réponses avant de passer à la Phase 2.
 2. **Chemin de destination** : Le chemin absolu complet du nouveau dossier (ex. `C:\Users\VotreNom\Documents\Projets\mon-api-rest`). Le dossier sera créé s'il n'existe pas.
 
 3. **Description courte** (optionnel) : 1-2 phrases décrivant le projet. Utilisé pour pré-remplir les fichiers steering. Peut être laissé vide pour remplir manuellement via `/init-project`.
+
+4. **Git** (optionnel) : Initialiser un repository git dans ce projet ? `[O/N]` (défaut : N). Si O, un `git init` est effectué après le déploiement et un commit initial est créé. Les points de synchronisation (commits stratégiques) seront activés dans `/new-feature`, `/init-project`, `/bug-verify` et `/review`.
 
 ## Phase 2 — Déploiement
 
@@ -92,6 +94,25 @@ EOF
 echo ".gitignore créé"
 ```
 
+### Étape 3bis : Initialisation Git (si activé)
+
+Si la réponse à la question 4 est `O` :
+
+```bash
+cd "[DEST-en-forward-slashes]"
+git init
+git add .
+git commit -m "chore: bootstrap environnement multi-agent [NOM-PROJET]"
+```
+
+Puis mettre à jour le flag dans `[DEST]/docs/state/active-session.md` : remplacer `**git_enabled** : false` par `**git_enabled** : true` (utiliser l'outil Edit).
+
+Afficher : `✅ Git initialisé — commit initial créé`
+
+Si la réponse est `N` ou absente : passer directement à l'Étape 4.
+
+**Note sécurité** : Le message de commit utilise uniquement le nom du projet en kebab-case (alphanumérique + tirets) — pas de variable utilisateur non validée dans la commande.
+
 ### Étape 4 : Personnalisation de la statusline
 
 Mets à jour la statusline dans `[DEST]/.claude/settings.json` pour afficher le nom du projet. Utilise l'outil Edit pour remplacer la valeur existante :
@@ -135,12 +156,13 @@ Contenu déployé :
   • 4 hooks      (.claude/settings.json)
   • Steering     (.claude/steering/ — templates vides)
   • Docs         (docs/state/, docs/specs/)
-  • .gitignore   (état session, bugs, settings.local)
+  • .gitignore   (état session, bugs, settings.local, worktrees, build)
+  [• Git         (repo initialisé, commit initial créé)]   ← si git activé
 
 Prochaines étapes :
   1. Ouvrir le dossier dans Claude Code
   2. /init-project          → configurer les fichiers steering avec les infos du projet
-  3. /new-feature "..."     → démarrer le premier développement
+  3. /new-feature "..."     → démarrer le premier développement (crée branche feat/ si git activé)
 ```
 
 ## Fichiers déployés (référence)

@@ -9,6 +9,17 @@ docs/state/snapshots/*.md
 # Rapports de bugs (données projet spécifiques, code potentiellement sensible)
 .claude/bugs/
 
+# Worktrees git (créés par /worktree-setup, gérés par git)
+.claude/worktrees/
+
+# Artefacts build courants
+node_modules/
+__pycache__/
+*.pyc
+target/
+dist/
+build/
+
 # OS
 .DS_Store
 Thumbs.db
