@@ -1,6 +1,7 @@
 # dev-env-bootstrap
 
 Skill Claude Code qui déploie l'environnement de dev multi-agent complet dans un nouveau projet.
+Il a été réalisé à partir d'un état de l'existant complété par les conseils de Claude restitué dans le fichier "skills-programming-environments-prd0.md".
 
 ## Ce que ça fait
 
