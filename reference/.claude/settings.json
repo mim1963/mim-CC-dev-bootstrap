@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'STATE=\"docs/state/active-session.md\"; SNAPDIR=\"docs/state/snapshots\"; mkdir -p \"$SNAPDIR\"; if [ -f \"$STATE\" ]; then STAMP=$(date +%Y%m%d-%H%M%S); cp \"$STATE\" \"$SNAPDIR/session-$STAMP.md\"; echo \"[PreCompact] Snapshot saved: session-$STAMP.md\"; ls -t \"$SNAPDIR\"/*.md 2>/dev/null | tail -n +6 | xargs -r rm; echo \"[PreCompact] Kept last 5 snapshots\"; else echo \"[PreCompact] No active-session.md found, skipping snapshot\"; fi'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"[Context] Rappel gestion contexte : <50% idéal | 50-70% vigilance | >70% /save-state immédiat\"'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"⚠️  Session terminée — Pensez à /save-state avant /clear pour préserver votre contexte\"'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"[SubagentStop] $(date +%H:%M:%S) — Sous-agent terminé\"'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": "🏗️ Dev Multi-Agent | Opus·Sonnet·Haiku | ctx<50% idéal | /save-state avant /clear"
+}

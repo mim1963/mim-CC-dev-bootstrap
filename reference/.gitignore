@@ -1,0 +1,14 @@
+# Session-specific state (données personnelles de session)
+docs/state/active-session.md
+docs/state/snapshots/*.md
+!docs/state/snapshots/.gitkeep
+
+# Permissions locales Claude Code (peut contenir des settings personnels)
+.claude/settings.local.json
+
+# Rapports de bugs (données projet spécifiques, code potentiellement sensible)
+.claude/bugs/
+
+# OS
+.DS_Store
+Thumbs.db
