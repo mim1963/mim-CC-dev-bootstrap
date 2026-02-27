@@ -4,6 +4,15 @@
 > Modèles : Opus (critique) · Sonnet (exécution) · Haiku (opérationnel)
 > Contexte : idéal < 50% · impératif < 70% → /save-state puis /clear
 
+## AUTO-RESTORE DIRECTIVE
+
+Au démarrage de chaque session, vérifier si un restore est en attente :
+1. Exécuter : `test -f docs/state/.pending-restore && echo PENDING || echo CLEAR`
+2. Si **PENDING** : exécuter `/restore-state` immédiatement, puis supprimer la sentinelle (`rm -f docs/state/.pending-restore`) et remettre le compteur (`echo 0 > docs/state/.checkpoint-counter`)
+3. Si **CLEAR** : procéder normalement
+
+Cette directive assure la continuité automatique après un /clear.
+
 ---
 
 ## WORKFLOWS PRINCIPAUX
@@ -96,11 +105,13 @@ Fichiers : .claude/bugs/[nom]/{report,analysis,fix-notes}.md
 - `/review` = 5 agents **simultanés en parallèle** (architect-reviewer + code-reviewer + security-auditor + jenny + pragmatist)
 - TDD = **RED → GREEN → REFACTOR** avec arrêt et confirmation utilisateur à chaque étape
 
-### Gestion du contexte
+### Gestion du contexte (automatisée)
 - **< 50%** : zone idéale — continuer normalement
-- **50–70%** : zone de vigilance — préparer /save-state
+- **50–70%** : zone de vigilance — préparer /save-state (hooks SubagentStop et PostToolUse alertent automatiquement)
 - **> 70%** : /save-state IMMÉDIAT → /clear → /restore-state
-- Hooks PostToolUse : alerte automatique si seuils approchés
+- Le **statusLine** persiste le % réel dans `docs/state/.context-level` — les hooks le lisent pour prendre des décisions
+- Le **SubagentStop** hook déclenche un CHECKPOINT automatique si ctx >= 50% après chaque sous-agent
+- Le **PreCompact** hook écrit une sentinelle `.pending-restore` pour l'auto-restore après /clear
 
 ### Sécurité
 - **Hooks** : ne jamais évaluer de variables input dans les hooks (`bash -c "... $VAR ..."` interdit)

@@ -3,6 +3,11 @@ docs/state/active-session.md
 docs/state/snapshots/*.md
 !docs/state/snapshots/.gitkeep
 
+# Fichiers éphémères de gestion automatique du contexte
+docs/state/.context-level
+docs/state/.checkpoint-counter
+docs/state/.pending-restore
+
 # Permissions locales Claude Code (peut contenir des settings personnels)
 .claude/settings.local.json
 

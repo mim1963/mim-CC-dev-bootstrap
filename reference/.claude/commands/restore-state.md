@@ -37,6 +37,15 @@ Utilisez : /restore-state snapshots/[nom-snapshot]
 Ou relancez /init-project pour démarrer un nouveau projet.
 ```
 
+### 1b. Nettoyer la sentinelle et le compteur
+
+Après lecture du fichier d'état, supprimer les fichiers de contrôle :
+```bash
+rm -f docs/state/.pending-restore
+echo "0" > docs/state/.checkpoint-counter
+```
+Cela évite de re-déclencher un restore dans la même session.
+
 ### 2. Restaurer le contexte
 
 Produire une réponse complète qui recharge le contexte :
@@ -114,7 +123,20 @@ Terminer par :
   Suggestion : [action basée sur "prochaine tâche"]
 ```
 
-### 4. Cas d'état incomplet
+### 4. Auto-resume depuis checkpoint
+
+Si l'état restauré contient une section `CHECKPOINT METADATA` :
+- Parser le champ `next_action`
+- Présenter une proposition de reprise one-click :
+  ```
+  Prêt à reprendre. Prochaine action :
+  > [next_action depuis les métadonnées]
+
+  Exécuter maintenant ? [O/N]
+  ```
+- Si l'utilisateur confirme, exécuter l'action directement
+
+### 5. Cas d'état incomplet
 
 Si certaines sections sont vides dans active-session.md :
 - Compléter avec "Non renseigné" ou chercher dans les specs/code

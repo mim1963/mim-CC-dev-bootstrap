@@ -1,7 +1,7 @@
 ---
 name: orchestrator
 description: PROACTIVE - Coordinateur du pipeline spec-driven complet. Invoquer pour orchestrer le développement d'une nouvelle feature de bout en bout : lance spec-analyst → spec-architect → spec-developer en séquence, enforce les gates de validation utilisateur entre chaque phase, délègue avec contexte minimal.
-model: claude-opus-4-6
+model: opus
 tools:
 - Task
 - Read
@@ -53,6 +53,32 @@ Pour chaque tâche dans tasks.md :
 3. **Si tests échouent** : itérer avec spec-developer
 4. **Si tests passent** : passer à la tâche suivante
 5. Après toutes les tâches : déclencher `/review`
+
+## Gestion automatique des checkpoints contexte
+
+Après chaque phase majeure du pipeline, vérifier le niveau de contexte :
+
+1. Lire `docs/state/.context-level` (fichier mis à jour en continu par le statusLine)
+2. Si le % est >= 50% :
+   a. Exécuter /save-state inline : mettre à jour `docs/state/active-session.md` avec l'état complet
+   b. Présenter à l'utilisateur :
+      ```
+      [CHECKPOINT] Contexte à XX%. État sauvegardé automatiquement.
+
+      Pour continuer avec un contexte frais :
+      1. Tapez /clear
+      2. Le restore se fera automatiquement au redémarrage
+
+      Ou continuez dans la session actuelle (le contexte peut se dégrader).
+      ```
+   c. Écrire la sentinelle : `echo "pending_restore=true" > docs/state/.pending-restore`
+3. Si < 50% : continuer normalement
+
+### Points de checkpoint dans le pipeline :
+- Après Phase 1 (spec-analyst + validation) → vérifier
+- Après Phase 2 (spec-architect + validators) → vérifier
+- Toutes les 2 tâches spec-developer complétées → vérifier
+- Avant Phase 4 (review) → vérifier systématiquement (la review lance 5 agents en parallèle = forte consommation)
 
 ## Règles critiques
 

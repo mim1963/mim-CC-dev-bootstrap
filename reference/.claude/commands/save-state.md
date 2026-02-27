@@ -75,3 +75,28 @@ Résumé :
 
 Créer également une copie dans `docs/state/snapshots/session-[YYYYMMDD-HHMMSS].md`
 Supprimer les snapshots au-delà de 5 (conserver les 5 plus récents).
+
+### 5. Métadonnées pipeline checkpoint
+
+Si un pipeline est actif (ex: `/new-feature`), ajouter en fin de `active-session.md` :
+
+```markdown
+## CHECKPOINT METADATA
+
+- **pipeline** : new-feature | bug-fix | none
+- **feature_name** : [nom kebab-case]
+- **phase** : requirements | design | implementation | review
+- **task_current** : [X] (numéro tâche, 0 si pas en implémentation)
+- **task_total** : [N]
+- **gate_passed** : 1 | 2 | 3 | 4
+- **next_action** : [commande exacte ou instruction pour reprendre]
+```
+
+Ces métadonnées permettent à `/restore-state` de proposer une reprise précise.
+
+### 6. Écrire la sentinelle (si automatique)
+
+Si le save-state est déclenché par un checkpoint automatique (contexte >= 50%) :
+1. Écrire `docs/state/.pending-restore` avec le timestamp et le snapshot
+2. Remettre le compteur : `echo 0 > docs/state/.checkpoint-counter`
+3. Informer l'utilisateur que le restore se fera automatiquement après `/clear`
