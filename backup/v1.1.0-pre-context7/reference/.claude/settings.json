@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'STATE=\"docs/state/active-session.md\"; SNAPDIR=\"docs/state/snapshots\"; SENTINEL=\"docs/state/.pending-restore\"; mkdir -p \"$SNAPDIR\"; STAMP=$(date +%Y%m%d-%H%M%S); if [ -f \"$STATE\" ]; then cp \"$STATE\" \"$SNAPDIR/session-$STAMP.md\"; echo \"[PreCompact] Snapshot saved: session-$STAMP.md\"; ls -t \"$SNAPDIR\"/*.md 2>/dev/null | tail -n +6 | xargs -r rm; echo \"[PreCompact] Kept last 5 snapshots\"; else echo \"[PreCompact] No active-session.md found, skipping snapshot\"; fi; echo \"pending_restore=true\" > \"$SENTINEL\"; echo \"snapshot=session-$STAMP.md\" >> \"$SENTINEL\"; echo \"saved_at=$STAMP\" >> \"$SENTINEL\"; echo \"0\" > \"docs/state/.checkpoint-counter\"; echo \"[PreCompact] Sentinel written. After compaction, recommend /clear + /restore-state for clean session.\"'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'SENTINEL=\"docs/state/.pending-restore\"; CTX_FILE=\"docs/state/.context-level\"; if [ -f \"$SENTINEL\" ]; then echo \"[Context] PENDING RESTORE — /clear + /restore-state recommande avant de continuer.\"; elif [ -f \"$CTX_FILE\" ]; then PCT=$(cat \"$CTX_FILE\" 2>/dev/null); if [ \"${PCT:-0}\" -ge 70 ] 2>/dev/null; then echo \"[Context] ctx:${PCT}% — /save-state IMMEDIAT puis /clear + /restore-state\"; elif [ \"${PCT:-0}\" -ge 50 ] 2>/dev/null; then echo \"[Context] ctx:${PCT}% — Checkpoint recommande. Preparer /save-state.\"; else echo \"[Context] ctx:${PCT}% OK — <50% ideal | 50-70% vigilance | >70% /save-state immediat\"; fi; else echo \"[Context] Rappel : <50% ideal | 50-70% vigilance | >70% /save-state immediat\"; fi'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'STATE=\"docs/state/active-session.md\"; SNAPDIR=\"docs/state/snapshots\"; mkdir -p \"$SNAPDIR\"; if [ -f \"$STATE\" ]; then STAMP=$(date +%Y%m%d-%H%M%S); cp \"$STATE\" \"$SNAPDIR/session-$STAMP.md\"; ls -t \"$SNAPDIR\"/*.md 2>/dev/null | tail -n +6 | xargs -r rm; echo \"[Stop] Auto-snapshot saved: session-$STAMP.md\"; fi; echo \"[Stop] Session terminee — /restore-state pour reprendre dans une nouvelle session\"'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'CTX_FILE=\"docs/state/.context-level\"; PCT=$(cat \"$CTX_FILE\" 2>/dev/null || echo \"0\"); if [ \"${PCT:-0}\" -ge 50 ] 2>/dev/null; then echo \"[CHECKPOINT] Contexte a ${PCT}%. Executer /save-state maintenant (MAJ active-session.md), puis proposer /clear + /restore-state a utilisateur.\"; else echo \"[SubagentStop] $(date +%H:%M:%S) — Sous-agent termine. Contexte: ${PCT}%\"; fi'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": "bash .claude/scripts/statusline.sh"
+}
