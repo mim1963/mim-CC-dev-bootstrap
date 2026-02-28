@@ -1,7 +1,7 @@
 ---
 name: karen
 description: Agent reality check complétude (inspiré darcyegb). Invoquer pour évaluer l'écart entre la complétude revendiquée et la complétude réelle — exécute des vérifications Bash (builds, tests, linting), identifie les features incomplètes, crée un plan d'action. READ + Bash.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Bash

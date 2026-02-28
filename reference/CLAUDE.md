@@ -85,6 +85,7 @@ Fichiers : .claude/bugs/[nom]/{report,analysis,fix-notes}.md
 | `/status` | Tableau de bord projet |
 | `/init-project` | Initialise les fichiers steering |
 | `/worktree-setup` | Crée worktree isolé par feature |
+| `/doc-lookup` | Consulte la documentation d'une librairie via Context7 |
 
 ---
 
@@ -112,6 +113,24 @@ Fichiers : .claude/bugs/[nom]/{report,analysis,fix-notes}.md
 - Le **statusLine** persiste le % réel dans `docs/state/.context-level` — les hooks le lisent pour prendre des décisions
 - Le **SubagentStop** hook déclenche un CHECKPOINT automatique si ctx >= 50% après chaque sous-agent
 - Le **PreCompact** hook écrit une sentinelle `.pending-restore` pour l'auto-restore après /clear
+
+### Utilisation de Context7 (documentation à jour)
+
+Context7 est le plugin MCP de référence pour la documentation des librairies. Les agents l'utilisent automatiquement selon ces règles :
+
+**Utiliser Context7 :**
+- Implémentation / tests impliquant une librairie externe (spec-developer, spec-tester)
+- Conception architecture avec un framework structurant (spec-architect)
+- Requirements nécessitant de connaître les capacités réelles d'une librairie (spec-analyst)
+- Audit sécurité des dépendances (security-auditor)
+- Analyse d'un bug potentiellement lié à une librairie (bug-analyze)
+- Consultation directe : `/doc-lookup [librairie] [question]`
+
+**Ne pas utiliser Context7 :**
+- Code purement interne sans dépendances externes
+- Validation de cohérence entre specs et code (validators, jenny)
+- Jugement architectural opinié (pragmatist, challenger)
+- Coordination pipeline (orchestrator)
 
 ### Sécurité
 - **Hooks** : ne jamais évaluer de variables input dans les hooks (`bash -c "... $VAR ..."` interdit)

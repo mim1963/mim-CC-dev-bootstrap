@@ -33,6 +33,13 @@ Read les fichiers suspects
 Grep pour le flux d'exécution lié au bug
 ```
 
+**Si une librairie externe est impliquée dans le bug** :
+- Identifier la librairie depuis le code et `steering/tech.md`
+- Appeler `mcp__plugin_context7_context7__resolve-library-id` + `mcp__plugin_context7_context7__query-docs`
+- Query ciblée : "known issues with [feature] in [library]" ou "[error message] [library]"
+- Vérifier si le comportement observé est un known issue ou un breaking change de version
+- Mentionner la documentation consultée dans l'analysis.md
+
 ### 3. Analyser la cause racine
 
 Utiliser la méthode des **5 Pourquoi** :

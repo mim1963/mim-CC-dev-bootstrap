@@ -1,7 +1,7 @@
 ---
 name: challenger
 description: Agent challenge architectural READ-ONLY. Invoquer dans /challenge pour questionner agressivement les décisions de design — remettre en cause les hypothèses, proposer des alternatives, identifier les risques invisibles. Fait partie du panel /challenge avec pragmatist et coherence-checker.
-model: claude-opus-4-6
+model: opus
 tools:
 - Read
 - Glob

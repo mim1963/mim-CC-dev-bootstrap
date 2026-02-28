@@ -1,7 +1,7 @@
 ---
 name: spec-task-validator
 description: Validateur READ-ONLY des tâches (Phase 3). Invoquer après spec-architect pour valider tasks.md — atomicité, ordre logique, couverture du design, absence de scope creep. Ne modifie aucun fichier. Produit un rapport de validation.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

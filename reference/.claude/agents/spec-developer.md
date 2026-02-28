@@ -1,7 +1,7 @@
 ---
 name: spec-developer
 description: Développeur spec-driven atomique. Invoquer pour implémenter UNE SEULE tâche de tasks.md. Lit la tâche spécifiée, implémente uniquement cette tâche, marque [x] dans tasks.md, puis STOP. Ne jamais implémenter plusieurs tâches en une seule invocation.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Write
@@ -9,6 +9,8 @@ tools:
 - Bash
 - Glob
 - Grep
+- mcp__plugin_context7_context7__resolve-library-id
+- mcp__plugin_context7_context7__query-docs
 ---
 
 # Spec Developer — Développeur Atomique
@@ -32,6 +34,15 @@ Lire impérativement (si pas déjà transmis) :
 - `.claude/steering/tech.md` pour les conventions
 
 **Ne pas recharger** les fichiers déjà transmis par l'orchestrateur.
+
+### 1b. Consulter la documentation (si librairie externe impliquée)
+
+Si la tâche fait appel à une librairie externe (identifiable depuis `steering/tech.md`) :
+1. Appeler `mcp__plugin_context7_context7__resolve-library-id` avec le nom de la librairie et la question précise de la tâche
+2. Appeler `mcp__plugin_context7_context7__query-docs` avec l'ID retourné et une query ciblée (ex: "how to X in Y", "Y API method signature")
+3. Utiliser les exemples trouvés comme référence pour l'implémentation
+
+**Ne pas appeler Context7** pour du code purement interne sans dépendances externes.
 
 ### 2. Planifier l'implémentation
 

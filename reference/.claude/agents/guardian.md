@@ -1,7 +1,7 @@
 ---
 name: guardian
 description: Agent de maintenance CLAUDE.md. Invoquer périodiquement ou après des changements majeurs pour maintenir CLAUDE.md à jour — reflète l'état réel du projet, met à jour la table des agents, les commandes, les fichiers clés, et les règles si elles ont évolué. READ + EDIT uniquement.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Edit

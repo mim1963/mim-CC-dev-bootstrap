@@ -1,7 +1,7 @@
 ---
 name: tdd-orchestrator
 description: Orchestrateur du cycle TDD (Test-Driven Development). Invoquer pour développer en mode RED-GREEN-REFACTOR strict. Guide le cycle tâche par tâche avec arrêt et confirmation à chaque étape. Idéal pour les composants critiques nécessitant une couverture maximale.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Bash

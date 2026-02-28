@@ -1,12 +1,14 @@
 ---
 name: spec-tester
 description: Testeur unitaire post-implémentation. Invoquer après spec-developer pour écrire et exécuter les tests unitaires d'une tâche implémentée. Valide que le code respecte les critères d'acceptance. Rapport pass/fail avec détails.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Bash
 - Glob
 - Grep
+- mcp__plugin_context7_context7__resolve-library-id
+- mcp__plugin_context7_context7__query-docs
 ---
 
 # Spec Tester — Testeur Unitaire
@@ -31,6 +33,12 @@ Pour chaque critère d'acceptance de la tâche :
 - Cas nominal (happy path)
 - Cas limites (edge cases)
 - Cas d'erreur (error paths)
+
+**Consulter la documentation du framework de test si besoin** :
+- Identifier le framework depuis `tech.md` (Jest, pytest, Vitest, go test…)
+- Si le pattern de test est incertain (mocking, fixtures, async, parametrize…) : appeler Context7
+- Query : "how to [pattern] with [framework]" (ex: "how to mock external calls with pytest")
+- Ne pas appeler Context7 pour des tests simples sans patterns spécifiques au framework
 
 ### 3. Écrire les tests
 

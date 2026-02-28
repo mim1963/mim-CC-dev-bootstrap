@@ -46,9 +46,11 @@
 ## Dépendances clés
 
 <!-- Bibliothèques critiques et versions -->
-| Bibliothèque | Version | Rôle |
-|-------------|---------|------|
-| [À remplir] | | |
+<!-- IMPORTANT : Indiquer le nom exact du package (npm/pip/cargo/go) — utilisé par Context7 pour le lookup de documentation -->
+<!-- Ex : "express" (pas "Express.js"), "react" (pas "React"), "sqlalchemy" (pas "SQLAlchemy") -->
+| Bibliothèque | Version | Rôle | Nom package exact |
+|-------------|---------|------|-------------------|
+| [À remplir] | | | |
 
 ## Points d'attention techniques
 

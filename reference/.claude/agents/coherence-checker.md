@@ -1,7 +1,7 @@
 ---
 name: coherence-checker
 description: Agent de cohérence globale READ-ONLY. Invoquer dans /team-review ou /review pour vérifier la cohérence entre les différentes parties du projet — naming, conventions, style, patterns, documentation. Détecte les incohérences qui passent inaperçues dans les revues focalisées.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

@@ -1,7 +1,7 @@
 ---
 name: spec-design-validator
 description: Validateur READ-ONLY du design (Phase 2). Invoquer après spec-architect pour valider design.md — cohérence avec requirements, solidité architecturale, décisions documentées. Ne modifie aucun fichier. Produit un rapport de validation.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

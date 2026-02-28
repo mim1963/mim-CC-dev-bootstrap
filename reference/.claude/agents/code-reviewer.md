@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Revieweur qualité code READ-ONLY. Invoquer dans /review pour analyser la qualité du code — lisibilité, maintenabilité, naming, complexité cyclomatique, duplication, documentation. Fait partie du panel de 5 agents de /review. Produit un rapport avec exemples concrets.
-model: claude-opus-4-6
+model: opus
 tools:
 - Read
 - Glob

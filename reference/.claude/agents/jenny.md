@@ -1,7 +1,7 @@
 ---
 name: jenny
 description: Agent de vérification implémentation vs specs READ-ONLY (inspiré darcyegb). Invoquer dans /review pour vérifier que le code implémenté correspond réellement aux specifications — requirements couverts, user stories satisfaites, critères d'acceptance respectés. Fait partie du panel de 5 agents de /review.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

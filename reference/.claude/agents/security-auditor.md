@@ -1,11 +1,13 @@
 ---
 name: security-auditor
 description: Auditeur sécurité READ-ONLY (OWASP Top 10). Invoquer dans /review pour identifier les vulnérabilités de sécurité — injections, auth/authz, secrets exposés, XSS, CSRF, dépendances vulnérables. Fait partie du panel de 5 agents de /review. Produit un rapport de sécurité avec niveaux de sévérité.
-model: claude-opus-4-6
+model: opus
 tools:
 - Read
 - Glob
 - Grep
+- mcp__plugin_context7_context7__resolve-library-id
+- mcp__plugin_context7_context7__query-docs
 ---
 
 # Security Auditor — Audit Sécurité OWASP [READ-ONLY]
@@ -69,6 +71,12 @@ Tu es un expert en sécurité applicative qui audite le code pour identifier les
 ## Processus
 
 ```
+0. Consulter la documentation sécurité des dépendances (Context7) :
+   - Lire steering/tech.md pour identifier les librairies avec accès réseau, auth, ou crypto
+   - Pour chaque librairie critique : resolve-library-id + query-docs
+   - Query : "security best practices for [library]" ou "known vulnerabilities [library]"
+   - Intégrer les résultats dans l'audit A06 (Vulnerable Components)
+
 1. Grep pour patterns de sécurité dangereux :
    - "password|secret|api_key|token" en clair dans le code
    - eval(|exec(|subprocess.shell=True|os.system(

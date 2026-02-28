@@ -1,7 +1,7 @@
 ---
 name: pragmatist
 description: Agent anti-sur-engineering READ-ONLY. Invoquer dans /review ou /challenge pour détecter la complexité inutile, les abstractions prématurées, et l'over-engineering. Fait partie du panel de 5 agents de /review. Défend le principe YAGNI et KISS.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

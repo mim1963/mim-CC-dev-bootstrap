@@ -1,7 +1,7 @@
 ---
 name: spec-requirements-validator
 description: Validateur READ-ONLY des requirements (Phase 1). Invoquer après spec-analyst pour valider la qualité de requirements.md avant de passer au design. Ne modifie aucun fichier. Produit un rapport de validation avec score et recommandations.
-model: claude-sonnet-4-6
+model: sonnet
 tools:
 - Read
 - Glob

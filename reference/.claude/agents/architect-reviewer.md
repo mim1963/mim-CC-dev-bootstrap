@@ -1,7 +1,7 @@
 ---
 name: architect-reviewer
 description: Revieweur architectural READ-ONLY. Invoquer dans /review pour analyser le code depuis une perspective architecturale — patterns, SOLID, scalabilité, couplage, cohésion. Fait partie du panel de 5 agents de /review. Produit un rapport structuré avec recommandations prioritisées.
-model: claude-opus-4-6
+model: opus
 tools:
 - Read
 - Glob
